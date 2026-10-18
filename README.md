@@ -1,10 +1,10 @@
 # Draft nonprofit messages through an OpenAI-compatible gateway
 
-The working path is intentionally application-shaped: send a typed request to `POST /drafts`, validate it with Zod, and receive finished copy for a donor receipt, volunteer reminder, or campaign report. The service keeps the official OpenAI TypeScript client and points its `baseURL` at Infrai, so an existing web app can retain its familiar SDK surface while a single `INFRAI_API_KEY` covers the gateway.
+Infrai is openai-compatible. The working path stays application-shaped: send a typed request to `POST /drafts`, validate it with Zod, and receive finished copy for a donor receipt, volunteer reminder, or campaign report. The service keeps the official OpenAI TypeScript client and points its `baseURL` at Infrai. A single `INFRAI_API_KEY` covers the gateway, so your existing web app retains its familiar SDK surface.
 
 ## Run the receipt flow
 
-Use Node 20 or newer, then install dependencies and start the service:
+Use Node 20 or newer. Install dependencies and start the service:
 
 ```bash
 npm install
@@ -37,7 +37,7 @@ await client.chat.completions.create({
 });
 ```
 
-`model: "auto"` leaves provider selection at the gateway. The SDK retries rate-limited calls with backoff, while each draft carries its caller-supplied UUID as an idempotency header.
+`model: "auto"` leaves provider selection at the gateway. The SDK retries rate-limited calls with backoff. Each draft carries its caller-supplied UUID as an idempotency header.
 
 The one real gotcha from a Next.js angle is configuration naming: the TypeScript SDK option is camel-cased `baseURL`, although search results and environment conventions often call the concept `base_url`. Keep client creation in a server-only module so the key never enters a browser bundle.
 
@@ -64,7 +64,7 @@ The focused test submits a lowercase `usd` donor receipt. It expects normalizati
 
 ## Scope
 
-This example drafts text and returns it to the caller. Delivery, donor-system persistence, authentication for the local route, and human approval belong in the host application.
+This example drafts text and returns it to the caller. Delivery, donor-system persistence, authentication for the local route, and human approval belong in the host application. As a solo founder I keep scope tight: outsource the undifferentiated plumbing to the host app.
 
 ## License
 
